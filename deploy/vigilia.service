@@ -1,0 +1,44 @@
+[Unit]
+Description=Vigilia - supervision reseau (lecture seule)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=vigilia
+Group=vigilia
+WorkingDirectory=/opt/vigilia
+# Identifiant et plage de switches (aucun secret ici)
+EnvironmentFile=/etc/vigilia/vigilia.env
+# Mot de passe SSH des switches : injecte par systemd, absent de l'environnement du processus
+LoadCredential=sw_pass:/etc/vigilia/sw_pass
+ExecStart=/usr/bin/python3 /opt/vigilia/server.py --live --host 0.0.0.0 --port 443 --cert /opt/vigilia/data/cert.pem --key /opt/vigilia/data/key.pem
+Restart=on-failure
+RestartSec=5
+UMask=0077
+
+# Durcissement
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+CapabilityBoundingSet=CAP_NET_BIND_SERVICE
+NoNewPrivileges=true
+ProtectSystem=strict
+ReadWritePaths=/opt/vigilia/data
+ProtectHome=true
+PrivateTmp=true
+PrivateDevices=true
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectKernelLogs=true
+ProtectControlGroups=true
+ProtectClock=true
+ProtectHostname=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+RestrictNamespaces=true
+RestrictRealtime=true
+RestrictSUIDSGID=true
+LockPersonality=true
+SystemCallArchitectures=native
+SystemCallFilter=@system-service
+SystemCallFilter=~@privileged @resources
+
+[Install]
+WantedBy=multi-user.target

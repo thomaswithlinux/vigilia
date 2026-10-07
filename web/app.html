@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vigilia</title>
+<link rel="icon" href="/favicon.svg">
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/app.css">
+</head><body>
+<div class="app">
+  <header class="top">
+    <div class="brand"><svg viewBox="0 0 64 40" width="36" height="23" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="eye" d="M3 20C14 5 50 5 61 20 50 35 14 35 3 20Z" stroke-width="4"/><path class="beat" d="M9 20H23L28 8L34 32L38 16L41 20H55" stroke-width="3.6"/></svg><span class="wordmark">vigilia</span></div>
+    <div id="banner" class="banner ok" role="status">Chargement...</div>
+    <div class="top-right">
+      <span class="live"><i class="dot ok pulse"></i><span id="live">live</span></span>
+      <span id="clock" class="muted mono"></span>
+      <button id="account" class="ghost" type="button" title="Mon compte : changer mon mot de passe"></button>
+      <button id="theme" class="ghost icon-btn" type="button" title="Theme clair / sombre" aria-label="Changer de theme">◐</button>
+      <button id="switchUser" class="ghost" type="button" title="Se déconnecter et ouvrir une autre session">⇄ Changer de compte</button>
+      <button id="logout" class="ghost">Deconnexion</button>
+    </div>
+  </header>
+
+  <nav class="side" id="nav" aria-label="Navigation">
+    <button data-v="overview"><i>◉</i><span>Vue d'ensemble</span></button>
+    <button data-v="switches"><i>▦</i><span>Switches</span></button>
+    <button data-v="topology"><i>⋔</i><span>Topologie</span></button>
+    <button data-v="problems"><i>⚠</i><span>Problemes</span><em id="navAlerts" class="nbadge" hidden></em></button>
+    <button data-v="log"><i>☰</i><span>Journal</span></button>
+    <button data-v="devices"><i>⌖</i><span>Appareils</span></button>
+    <button data-v="poe"><i>⚡</i><span>PoE</span></button>
+    <button data-v="perf"><i>◔</i><span>Performance</span></button>
+    <button data-v="inventory"><i>▤</i><span>Inventaire</span></button>
+    <button data-v="configs"><i>⎘</i><span>Configurations</span></button>
+    <button data-v="report"><i>◧</i><span>Rapport</span></button>
+    <button data-v="admin" hidden><i>⚙</i><span>Administration</span></button>
+    <div class="side-foot muted" id="sideFoot"></div>
+  </nav>
+
+  <main class="views">
+    <!-- ===== Vue d'ensemble ===== -->
+    <section class="view" id="v-overview">
+      <div class="kpis" id="kpis"></div>
+      <div class="ov">
+        <div class="col">
+          <div class="panel"><div class="panel-h"><h3>Switches</h3><span class="muted" id="swSummary"></span></div><div class="cards" id="swCards"></div></div>
+          <div class="panel grow"><div class="panel-h"><h3>Trafic total</h3><span class="muted" id="ovTrafficNow"></span></div><div class="pb chartbox"><svg id="chOv" class="chart"></svg></div></div>
+        </div>
+        <div class="col">
+          <div class="panel grow"><div class="panel-h"><h3>Problemes actifs <span class="count" id="ovCount">0</span></h3><a class="more" data-v="problems">Tout voir</a></div><div class="pb" id="ovAlerts"></div></div>
+          <div class="panel grow3"><div class="panel-h"><h3>Derniers evenements</h3><a class="more" data-v="log">Journal</a></div><div class="pb events" id="ovEvents"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Switches ===== -->
+    <section class="view" id="v-switches">
+      <div class="sw-layout">
+        <div class="panel swlist-p"><div class="panel-h"><h3>Equipements</h3></div><div class="pb" id="swList"></div></div>
+        <div class="sw-main">
+          <div class="panel" id="front">
+            <div class="panel-h"><h3 id="swTitle">-</h3>
+              <button class="btn-ssh" id="sshBtn" type="button">&gt;_ Se connecter en SSH</button>
+              <div class="legend"><span><i class="lg up"></i>Actif</span><span><i class="lg warn"></i>Degrade</span><span><i class="lg crit"></i>Panne</span><span><i class="lg off"></i>Libre</span></div></div>
+            <div class="swmeta" id="swMeta"></div>
+            <div class="panel-wrap" id="ports"></div>
+          </div>
+          <div class="sw-bottom">
+            <div class="panel"><div class="panel-h"><h3>Trafic</h3><span class="muted" id="trafficNow"></span></div><div class="pb chartbox"><svg id="chTraffic" class="chart"></svg></div></div>
+            <div class="panel"><div class="panel-h"><h3>CPU et temperature</h3><span class="muted" id="cpuNow"></span></div><div class="pb chartbox"><svg id="chCpu" class="chart"></svg></div></div>
+            <div class="panel"><div class="panel-h"><h3>Ports les plus charges</h3></div><div class="pb"><table class="tbl" id="top"></table></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Problemes ===== -->
+    <section class="view" id="v-problems">
+      <div class="toolbar">
+        <div class="chips" id="sevFilter"><button class="chip on" data-f="all">Tous</button><button class="chip" data-f="crit">Critiques</button><button class="chip" data-f="warn">Alertes</button></div>
+        <span class="muted" id="probSummary"></span>
+      </div>
+      <div class="split">
+        <div class="panel"><div class="pb" id="alerts"></div></div>
+        <div class="panel"><div class="panel-h"><h3>Diagnostic</h3></div><div class="pb pad" id="alertDetail"></div></div>
+      </div>
+    </section>
+
+    <!-- ===== Journal ===== -->
+    <section class="view" id="v-log">
+      <div class="toolbar wrap">
+        <div class="chips" id="logFilter"><button class="chip on" data-l="all">Tout</button><button class="chip" data-l="crit">Critiques</button><button class="chip" data-l="warn">Alertes</button><button class="chip" data-l="ok">Résolus</button><button class="chip" data-l="info">Infos</button></div>
+        <select id="logSw" class="sel" aria-label="Switch"><option value="">Tous les switches</option></select>
+        <select id="logKind" class="sel" aria-label="Type"><option value="">Tous les types</option></select>
+        <select id="logDays" class="sel" aria-label="Période"><option value="1">24 heures</option><option value="7" selected>7 jours</option><option value="30">30 jours</option><option value="0">Tout l'historique</option></select>
+        <input id="logSearch" class="search" type="search" placeholder="Rechercher (switch, port, MAC, mot...)" autocomplete="off">
+        <span class="muted" id="logCount"></span>
+        <div class="zipbox" id="zipBox"><select id="zipDays" class="sel" aria-label="Période de l'export"><option value="7">7 j</option><option value="30" selected>30 j</option><option value="90">90 j</option><option value="365">1 an</option></select><button class="ghost" id="logZip" type="button">⬇ Télécharger les logs (.zip)</button></div>
+      </div>
+      <div class="log-split">
+        <div class="panel"><div class="pb" id="logBody"><table class="tbl" id="logTbl"></table><div id="logMore"></div></div></div>
+        <div class="panel"><div class="panel-h"><h3>Détail de l'événement</h3></div><div class="pb pad" id="logDetail"><div class="muted">Cliquez sur une ligne du journal pour voir le détail : contexte, cause probable, vérifications, événements liés.</div></div></div>
+      </div>
+    </section>
+
+    <!-- ===== Appareils ===== -->
+    <section class="view" id="v-devices">
+      <div class="toolbar wrap">
+        <input id="devSearch" class="search" type="search" placeholder="Rechercher (MAC, nom, port, VLAN, constructeur, note...)" autocomplete="off">
+        <span class="muted" id="devCount"></span>
+        <div class="zipbox"><button class="ghost" id="devReset" type="button">Réinitialiser les filtres</button><button class="ghost" id="devCsv" type="button">⬇ Exporter la liste (.csv)</button></div>
+      </div>
+      <div class="toolbar wrap filters">
+        <select id="devSw" class="sel" aria-label="Switch"></select>
+        <select id="devVlan" class="sel" aria-label="VLAN"></select>
+        <select id="devVen" class="sel" aria-label="Constructeur"></select>
+        <select id="devCat" class="sel" aria-label="Type d'appareil"></select>
+        <select id="devSpd" class="sel" aria-label="Vitesse"></select>
+        <label class="chk"><input type="checkbox" id="devPoe"> Alimentés en PoE</label>
+        <label class="chk"><input type="checkbox" id="devNew"> Nouveaux (24 h)</label>
+        <label class="chk"><input type="checkbox" id="devMoved"> Déplacés</label>
+        <label class="chk"><input type="checkbox" id="devProb"> Avec un problème</label>
+        <label class="chk"><input type="checkbox" id="devHide" checked> Masquer les liens inter-switch</label>
+      </div>
+      <div class="panel grow"><div class="pb"><table class="tbl" id="devTbl"></table></div></div>
+    </section>
+
+    <!-- ===== PoE ===== -->
+    <section class="view" id="v-poe">
+      <div class="kpis kpis-poe" id="poeKpis"></div>
+      <div class="panel grow"><div class="panel-h"><h3>Ports alimentes</h3><span class="muted" id="poeCount"></span></div><div class="pb"><table class="tbl" id="poeTbl"></table></div></div>
+    </section>
+
+    <!-- ===== Performance ===== -->
+    <section class="view" id="v-perf">
+      <div class="toolbar"><div class="chips" id="perfRange"><button class="chip on" data-p="live">En direct</button><button class="chip" data-p="1h">1 h</button><button class="chip" data-p="24h">24 h</button><button class="chip" data-p="7d">7 jours</button><button class="chip" data-p="30d">30 jours</button></div><span class="muted">Courbes CPU / temperature : en direct ou historique enregistre</span></div>
+      <div class="panel"><div class="panel-h"><h3>Sante des equipements</h3></div><div class="pb"><table class="tbl" id="perfTbl"></table></div></div>
+      <div class="perf-charts">
+        <div class="panel"><div class="panel-h"><h3>CPU par switch</h3><span class="legend2" id="perfLegend"></span></div><div class="pb chartbox"><svg id="chPerfCpu" class="chart"></svg></div></div>
+        <div class="panel"><div class="panel-h"><h3>Temperature par switch</h3></div><div class="pb chartbox"><svg id="chPerfTemp" class="chart"></svg></div></div>
+      </div>
+    </section>
+
+    <!-- ===== Topologie ===== -->
+    <section class="view" id="v-topology">
+      <div class="toolbar wrap">
+        <input id="topoSearch" class="search" type="search" placeholder="Chercher un appareil (nom, MAC, port, VLAN, constructeur)..." autocomplete="off">
+        <div class="chips" id="topoCats"></div>
+        <button class="chip" id="topoProb" type="button">Problèmes seulement</button>
+        <button class="ghost" id="topoExpand" type="button">Tout déplier</button>
+        <button class="ghost" id="topoCollapse" type="button">Tout replier</button>
+        <button class="ghost" id="topoFit" type="button">Recentrer</button>
+      </div>
+      <div class="topo-layout">
+        <div class="panel"><div class="panel-h"><h3>Topologie - switches et appareils connectés</h3>
+          <div class="legend"><span><i class="lg up"></i>Actif</span><span><i class="lg warn"></i>Alerte</span><span><i class="lg crit"></i>Critique / coupé</span><span class="muted">molette = zoom · glisser = déplacer · clic = déplier</span></div></div>
+          <div class="pb chartbox" id="topoBox"><svg id="topo" class="chart"></svg></div></div>
+        <div class="panel topo-side"><div class="panel-h"><h3 id="topoSideT">Détails</h3></div><div class="pb pad" id="topoSide"></div></div>
+      </div>
+    </section>
+
+    <!-- ===== Inventaire ===== -->
+    <section class="view" id="v-inventory">
+      <div class="toolbar"><span class="muted" id="invSummary"></span><button class="ghost" id="invCsv" style="margin-left:auto">Exporter en CSV</button></div>
+      <div class="panel grow"><div class="pb"><table class="tbl" id="invTbl"></table></div></div>
+    </section>
+
+    <!-- ===== Configurations ===== -->
+    <section class="view" id="v-configs">
+      <div class="sw-layout">
+        <div class="panel swlist-p"><div class="panel-h"><h3>Equipements</h3></div><div class="pb" id="cfgList"></div></div>
+        <div class="sw-main">
+          <div class="panel" style="flex:0 1 38%"><div class="panel-h"><h3 id="cfgTitle">Sauvegardes</h3><button class="btn-ssh" id="cfgBackup" type="button">Sauvegarder maintenant</button></div><div class="pb" id="cfgHist"></div></div>
+          <div class="panel grow"><div class="panel-h"><h3 id="cfgViewTitle">Contenu</h3><div class="btns"><button class="btn-ssh" id="cfgCopy" type="button" disabled>Copier dans le presse-papiers</button><button class="btn-ssh" id="cfgDl" type="button" disabled>Télécharger .txt</button></div></div><div class="pb"><pre id="cfgView" class="pre"></pre></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Rapport ===== -->
+    <section class="view" id="v-report">
+      <div class="toolbar"><div class="chips" id="repRange"><button class="chip on" data-r="7">7 jours</button><button class="chip" data-r="30">30 jours</button></div><span class="muted" id="repNote"></span><button class="ghost" id="repPrint" style="margin-left:auto">Imprimer / PDF</button></div>
+      <div class="kpis" id="repKpis"></div>
+      <div class="rep-grid">
+        <div class="panel"><div class="panel-h"><h3>Par switch</h3></div><div class="pb"><table class="tbl" id="repTbl"></table></div></div>
+        <div class="col">
+          <div class="panel grow"><div class="panel-h"><h3>Ports les plus instables</h3></div><div class="pb"><table class="tbl" id="repUnst"></table></div></div>
+          <div class="panel grow"><div class="panel-h"><h3>Types de problemes</h3></div><div class="pb" id="repKinds"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Administration ===== -->
+    <section class="view" id="v-admin">
+      <div class="split">
+        <div class="panel"><div class="panel-h"><h3>Utilisateurs</h3></div><div class="pb">
+          <div class="newuser" id="newUser">
+            <div class="nu-h">Créer un compte <span class="muted">(réservé aux administrateurs)</span></div>
+            <div class="nu-row">
+              <label class="fld">Nom d'utilisateur<input id="nuUser" autocomplete="off" maxlength="32" placeholder="ex : marie.dupont"></label>
+              <label class="fld">Rôle<select id="nuRole"><option value="viewer">Lecture seule</option><option value="tech">Technicien</option><option value="admin">Administrateur</option></select></label>
+            </div>
+            <label class="fld">Mot de passe <span class="muted">(laisser vide = généré aléatoirement et affiché une seule fois)</span><input id="nuPw" type="password" autocomplete="new-password" placeholder="12 caractères min., 3 types de caractères"></label>
+            <div id="nuMsg" class="nu-msg" role="status"></div>
+            <button class="btn" id="nuCreate" type="button">Créer le compte</button>
+          </div>
+          <table class="tbl" id="admUsers"></table><div class="pad muted" style="padding:12px 14px">Suppression, changement de rôle ou réinitialisation d'un mot de passe : en ligne de commande, <code>python adduser.py</code> (voir son aide).</div></div></div>
+        <div class="panel"><div class="panel-h"><h3>Journal d'audit</h3></div><div class="pb"><table class="tbl" id="admAudit"></table></div></div>
+      </div>
+    </section>
+  </main>
+</div>
+<div id="modal" class="modal" hidden><div class="mbox" role="dialog" aria-modal="true" aria-labelledby="mtitle" id="mbox"></div></div>
+<aside id="drawer" class="drawer" aria-label="Detail du port"></aside>
+<div id="tip" class="tip" hidden></div>
+<script src="/app.js"></script>
+<script src="/views.js"></script>
+<script src="/topo.js"></script>
+<script src="/devices.js"></script>
+<script src="/journal.js"></script>
+<script src="/account.js"></script>
+</body></html>
