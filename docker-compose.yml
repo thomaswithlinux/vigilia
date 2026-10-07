@@ -1,0 +1,20 @@
+# Demonstration locale : docker compose up --build   puis   http://127.0.0.1:8090/
+# Le mot de passe du compte admin est genere au premier lancement : docker compose logs vigilia | grep "PREMIER LANCEMENT"
+services:
+  vigilia:
+    build: .
+    ports:
+      - "127.0.0.1:8090:8090"   # exposé uniquement sur la machine locale (HTTP : demonstration)
+    volumes:
+      - vigilia-data:/data
+    restart: unless-stopped
+    read_only: true
+    tmpfs:
+      - /tmp
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+
+volumes:
+  vigilia-data:

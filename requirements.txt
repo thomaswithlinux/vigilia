@@ -1,0 +1,2 @@
+# Seule dependance externe (le reste utilise la bibliotheque standard de Python 3.10+)
+paramiko>=3.4,<5

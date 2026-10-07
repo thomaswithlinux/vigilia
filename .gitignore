@@ -1,0 +1,30 @@
+# Donnees d'execution : base, comptes (hashes), cles TLS, empreintes SSH, sauvegardes de configuration des switches
+data/
+backups/
+known_hosts
+*.db
+*.db-wal
+*.db-shm
+users.json
+
+# Secrets et certificats : ne jamais les versionner
+.env
+*.env
+!deploy/vigilia.env.example
+*.pem
+*.key
+*.crt
+sw_pass
+
+# Python et outils
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.log
+*.tmp
+.pytest_cache/
+
+# Export de journaux, archives, documents generes
+*.zip
+*.pdf
