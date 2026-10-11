@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Vigilia - Connexion</title>
+<link rel="icon" href="/favicon.svg">
+<script src="/theme.js"></script>
+<link rel="stylesheet" href="/app.css">
+</head><body class="login-body">
+<div class="fx" aria-hidden="true"><div class="fx-floor"></div><i class="fx-orb o1"></i><i class="fx-orb o2"></i><div class="fx-scan"></div></div>
+<button id="theme" class="ghost icon-btn login-theme" type="button" title="Theme clair / sombre" aria-label="Changer de theme">◐</button>
+<main class="login-wrap">
+  <form class="login-card" id="f" autocomplete="on">
+    <div class="lc-eyebrow"><span><i class="dot ok pulse"></i>Canal sécurisé</span><span class="tag">TLS</span></div>
+    <div class="brand"><svg viewBox="0 0 64 40" width="48" height="31" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path class="eye" d="M3 20C14 5 50 5 61 20 50 35 14 35 3 20Z" stroke-width="4"/><path class="beat" pathLength="100" d="M9 20H23L28 8L34 32L38 16L41 20H55" stroke-width="3.6"/></svg><span class="wordmark">vigilia</span></div>
+    <h1>Connexion</h1>
+    <p class="muted">Supervision réseau — lecture seule</p>
+    <label for="u">Utilisateur</label>
+    <input id="u" name="username" autocomplete="username" autocapitalize="none" spellcheck="false" required autofocus>
+    <label for="p">Mot de passe</label>
+    <input id="p" name="password" type="password" autocomplete="current-password" required>
+    <div id="codeRow" hidden>
+      <label for="c">Code de double authentification</label>
+      <input id="c" inputmode="numeric" autocomplete="one-time-code" maxlength="8" placeholder="123456">
+    </div>
+    <button id="b" type="submit">Se connecter</button>
+    <div class="err" id="e" role="alert"></div>
+    <div class="lc-foot"><span>Accès restreint</span><span>Sessions journalisées</span></div>
+  </form>
+</main>
+<script src="/login.js"></script>
+</body></html>

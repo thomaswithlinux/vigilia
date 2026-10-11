@@ -1,0 +1,9 @@
+.git
+.github
+data
+docs
+tests
+deploy
+__pycache__
+*.pyc
+*.md

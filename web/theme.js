@@ -1,1 +1,0 @@
-(function () { var q = new URLSearchParams(location.search).get('theme'); try { document.documentElement.dataset.theme = q || localStorage.getItem('vigilia-theme') || 'dark'; } catch (e) { document.documentElement.dataset.theme = q || 'dark'; } })();

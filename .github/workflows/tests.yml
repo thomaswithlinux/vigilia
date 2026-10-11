@@ -1,0 +1,33 @@
+name: tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [v1, v2]
+        python: ["3.11", "3.12", "3.13"]
+    defaults:
+      run:
+        working-directory: ${{ matrix.version }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -r requirements.txt
+      - name: Tests de securite et de fonctionnalites
+        run: python tests/test_vigilia.py
+      - name: Demarrage du mode demonstration
+        run: |
+          export VIGILIA_DATA="$(mktemp -d)" SWITCHMON_PASS='Ci-Demo-Pass-2026!x'
+          python server.py --port 8099 &
+          PID=$!
+          sleep 8
+          curl -fsS -o /dev/null http://127.0.0.1:8099/
+          kill $PID

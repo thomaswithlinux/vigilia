@@ -1,0 +1,6 @@
+{
+  "hosts": [
+    {"name": "ESX-PROD-01", "host": "192.0.2.201", "user": "vigilia-ro", "password": "A-REMPLACER"},
+    {"name": "ESX-PROD-02", "host": "192.0.2.202", "user": "vigilia-ro", "password": "A-REMPLACER"}
+  ]
+}

@@ -28,3 +28,8 @@ venv/
 # Export de journaux, archives, documents generes
 *.zip
 *.pdf
+
+# Identifiants des hotes ESXi et empreintes de certificats : jamais versionnes
+esxi.json
+esxi_pins.json
+!deploy/esxi.json.example

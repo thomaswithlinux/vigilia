@@ -1,0 +1,1 @@
+(function () { var ok = function (v) { return v === 'light' || v === 'dark' ? v : null; }; var q = ok(new URLSearchParams(location.search).get('theme')); try { document.documentElement.dataset.theme = q || ok(localStorage.getItem('vigilia-theme')) || 'dark'; } catch (e) { document.documentElement.dataset.theme = q || 'dark'; } })();

@@ -1,0 +1,3 @@
+# Dependances externes (le reste utilise la bibliotheque standard de Python 3.10+)
+paramiko>=3.4,<5      # collecte SSH des switches
+requests>=2.31,<3     # supervision des hotes VMware ESXi (API vSphere, lecture seule)
