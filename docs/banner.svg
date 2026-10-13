@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="260" viewBox="0 0 1200 260" role="img" aria-label="Vigilia - Read-only supervision for Alcatel-Lucent switches and VMware ESXi hosts.">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#f5b53f"/>
+      <stop offset="0.45" stop-color="#f9c65a"/>
+      <stop offset="1" stop-color="#ffd479"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="260" rx="14" fill="#1e1e21"/>
+  <rect x="0.5" y="0.5" width="1199" height="259" rx="14" fill="none" stroke="#3a3a3f"/>
+  <rect x="0" y="0" width="1200" height="44" rx="14" fill="#242427"/>
+  <rect x="0" y="30" width="1200" height="14" fill="#242427"/>
+  <line x1="0" y1="44" x2="1200" y2="44" stroke="#3a3a3f"/>
+  <circle cx="28" cy="22" r="6" fill="#e08a3c"/>
+  <circle cx="50" cy="22" r="6" fill="#f5b53f"/>
+  <circle cx="72" cy="22" r="6" fill="#3ddc97"/>
+  <text x="600" y="27" text-anchor="middle" font-family="ui-monospace, 'Cascadia Code', Consolas, monospace" font-size="13" fill="#85837e">thomaswithlinux@github: ~/Vigilia</text>
+  <text x="60" y="120" font-family="ui-monospace, 'Cascadia Code', Consolas, monospace" font-size="22" fill="#85837e">$ <tspan fill="#f5b53f">cat</tspan> README.md</text>
+  <text x="60" y="185" font-family="'Segoe UI', system-ui, -apple-system, Roboto, sans-serif" font-size="54" font-weight="700" fill="url(#g)">Vigilia</text>
+  <text x="60" y="224" font-family="'Segoe UI', system-ui, -apple-system, Roboto, sans-serif" font-size="20" fill="#bdbbb5">Read-only supervision for Alcatel-Lucent switches and VMware ESXi hosts.</text>
+</svg>
